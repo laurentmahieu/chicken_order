@@ -3,7 +3,5 @@ import { RouterView } from "vue-router";
 </script>
 
 <template>
-  <header>mon header</header>
-
   <RouterView />
 </template>
