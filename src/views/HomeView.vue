@@ -10,41 +10,110 @@
 
     <div id="daychoice">
       <div id="daychoiceBtns">
-        <button
+        <MyButton
+          msg="Samedi"
           @click="choosenday = 1"
-          :class="choosenday === 1 ? 'isSelected' : ''"
-        >
-          Samedi
-        </button>
-        <button
+          :bgColor="choosenday === 1 ? 'orange' : 'aliceblue'"
+          :color="choosenday === 1 ? 'aliceblue' : 'orange'"
+        />
+
+        <MyButton
+          msg="dimanche"
           @click="choosenday = 2"
-          :class="choosenday === 2 ? 'isSelected' : ''"
-        >
-          dimanche
-        </button>
+          :bgColor="choosenday === 2 ? 'orange' : 'aliceblue'"
+          :color="choosenday === 2 ? 'aliceblue' : 'orange'"
+        />
       </div>
     </div>
-    <MyInput label="Au nom de " type="text" />
-    <MyInput label="nombre de poulet de Lick" />
-    <MyInput label="nombre de poulet 1,4 kg" />
-    <MyInput label="nombre de poulet 1,2 kg" />
-    <MyInput label="nombre de barquette de pomme de terre" />
+    <MyInput
+      label="Nom *"
+      type="text"
+      name="name"
+      required
+      :showRequireMessage="showRequireMessage"
+      v-model="name"
+      @blurInput="showRequireMessage = true"
+    />
+
+    <MyInput label="Nombre de poulet de Lick" v-model="lickChicken" />
+    <MyInput label="Nombre de poulet 1,4 kg" v-model="chicken" />
+    <MyInput label="Nombre de poulet 1,2 kg" v-model="smallChicken" />
+    <MyInput label="Nombre de barquette de pomme de terre" v-model="patate" />
+
+    <div style="display: flex; justify-content: space-between">
+      <MyButton
+        msg="Annuler"
+        @click="clearForm"
+        bgColor="aliceblue"
+        color="orange"
+      />
+      <MyButton
+        msg="Envoyer"
+        @click="handleSave"
+        bgColor="orange"
+        color="aliceblue"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import MyInput from "@/components/MyInput.vue";
+import MyButton from "@/components/MyButton.vue";
 
 export default defineComponent({
   name: "HomeView",
 
-  components: { MyInput },
+  components: { MyInput, MyButton },
 
   data() {
     return {
       choosenday: null as number | null,
+      name: "",
+      showRequireMessage: false,
+      lickChicken: "",
+      chicken: "",
+      smallChicken: "",
+      patate: "",
     };
+  },
+
+  methods: {
+    clearForm() {
+      this.choosenday = null;
+      this.name = "";
+      this.showRequireMessage = false;
+      this.lickChicken = "";
+      this.chicken = "";
+      this.smallChicken = "";
+      this.patate = "";
+    },
+
+    handleSave() {
+      if (this.choosenday) {
+        if (this.name) {
+          if (
+            this.lickChicken ||
+            this.chicken ||
+            this.smallChicken ||
+            this.patate
+          ) {
+            //
+            alert("Merci, à très vite");
+          } else {
+            alert(
+              "Veuillez au moins indiquer une quantité positive pour un article "
+            );
+          }
+        } else {
+          this.showRequireMessage = true;
+          alert("saisissez un nom");
+        }
+      } else {
+        alert("choisissez un jour");
+      }
+    },
   },
 });
 </script>
@@ -71,7 +140,7 @@ p {
 #daychoiceBtns {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 button {
