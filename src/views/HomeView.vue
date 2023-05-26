@@ -5,7 +5,7 @@
     <img src="/android-chrome-384x384.png" alt="alt" id="homeHeaderImg" />
   </div>
   <div class="container">
-    <p>Bonjour et bienvenue,</p>
+    <p>Bonjour et bienvenue{{ ` ${name}` }},</p>
     <p>Vous souhaitez réservez pour :</p>
 
     <div id="daychoice">
@@ -79,6 +79,10 @@ export default defineComponent({
     };
   },
 
+  mounted() {
+    this.name = localStorage.getItem("username") ?? "";
+  },
+
   methods: {
     clearForm() {
       this.choosenday = null;
@@ -92,7 +96,7 @@ export default defineComponent({
 
     handleSave() {
       if (this.choosenday) {
-        if (this.name) {
+        if (this.name?.trim()) {
           if (
             this.lickChicken ||
             this.chicken ||
@@ -101,6 +105,8 @@ export default defineComponent({
           ) {
             //
             alert("Merci, à très vite");
+            localStorage.setItem("username", this.name);
+            this.$router.push("/");
           } else {
             alert(
               "Veuillez au moins indiquer une quantité positive pour un article "
