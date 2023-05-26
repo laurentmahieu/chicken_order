@@ -5,7 +5,7 @@
     <img src="/android-chrome-384x384.png" alt="alt" id="homeHeaderImg" />
   </div>
   <div class="container">
-    <p>Bonjour et bienvenu,</p>
+    <p>Bonjour et bienvenue,</p>
     <p>Vous souhaitez réservez pour :</p>
 
     <div id="daychoice">
