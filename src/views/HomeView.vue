@@ -7,23 +7,21 @@
     <p>Vous souhaitez réservez pour :</p>
 
     <div id="daychoice">
-      <div id="daychoiceBtns">
-        <MyButtonDay
-          day="samedi"
-          :msg="getFormatDate(saturday)"
-          @click="choosenday = 1"
-          :bgColor="choosenday === 1 ? 'navy' : 'white'"
-          :color="choosenday === 1 ? 'white' : 'navy'"
-        />
+      <MyButtonDay
+        day="samedi"
+        :msg="getFormatDate(saturday)"
+        @click="choosenday = 1"
+        :bgColor="choosenday === 1 ? 'navy' : 'white'"
+        :color="choosenday === 1 ? 'white' : 'navy'"
+      />
 
-        <MyButtonDay
-          day="dimanche"
-          :msg="getFormatDate(sunday)"
-          @click="choosenday = 2"
-          :bgColor="choosenday === 2 ? 'navy' : 'white'"
-          :color="choosenday === 2 ? 'white' : 'navy'"
-        />
-      </div>
+      <MyButtonDay
+        day="dimanche"
+        :msg="getFormatDate(sunday)"
+        @click="choosenday = 2"
+        :bgColor="choosenday === 2 ? 'navy' : 'white'"
+        :color="choosenday === 2 ? 'white' : 'navy'"
+      />
     </div>
 
     <!--     
@@ -185,8 +183,7 @@ p {
   margin: auto;
   color: navy;
 }
-#daychoice,
-#daychoiceBtns {
+#daychoice {
   width: 100%;
   display: flex;
   flex-direction: column;
