@@ -55,7 +55,7 @@ export default defineComponent({
 
 <style scoped>
 label {
-  color: orange;
+  color: navy;
   background-color: white;
   margin-bottom: -4px;
   margin-left: 5px;
@@ -65,18 +65,18 @@ label {
   font-size: small;
 }
 input {
-  border: 1px solid orange;
+  border: 1px solid navy;
   border-radius: 5px;
   padding: 15px;
   background-color: white;
-  color: orange;
+  color: navy;
 }
 .borderRed {
   border: 1px solid #a83234;
 }
 
 input:focus {
-  border: 1px solid orange;
+  border: 1px solid navy;
 }
 .myInput {
   width: 100%;
