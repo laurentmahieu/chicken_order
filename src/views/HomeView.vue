@@ -3,26 +3,30 @@
     <img src="/android-chrome-384x384.png" alt="alt" id="homeHeaderImg" />
   </div>
   <div class="container">
-    <p>Bonjour et bienvenue{{ ` ${name}` }},</p>
+    <p>Bonjour et bienvenue{{ name ? ` ${name}` : "" }},</p>
     <p>Vous souhaitez réservez pour :</p>
 
     <div id="daychoice">
       <div id="daychoiceBtns">
-        <MyButton
-          msg="Samedi"
+        <MyButtonDay
+          day="samedi"
+          :msg="getFormatDate(saturday)"
           @click="choosenday = 1"
-          :bgColor="choosenday === 1 ? 'orange' : 'aliceblue'"
-          :color="choosenday === 1 ? 'aliceblue' : 'orange'"
+          :bgColor="choosenday === 1 ? 'navy' : 'white'"
+          :color="choosenday === 1 ? 'white' : 'navy'"
         />
 
-        <MyButton
-          msg="dimanche"
+        <MyButtonDay
+          day="dimanche"
+          :msg="getFormatDate(sunday)"
           @click="choosenday = 2"
-          :bgColor="choosenday === 2 ? 'orange' : 'aliceblue'"
-          :color="choosenday === 2 ? 'aliceblue' : 'orange'"
+          :bgColor="choosenday === 2 ? 'navy' : 'white'"
+          :color="choosenday === 2 ? 'white' : 'navy'"
         />
       </div>
     </div>
+
+    <!--     
     <MyInput
       label="Nom *"
       type="text"
@@ -43,27 +47,33 @@
         msg="Annuler"
         @click="clearForm"
         bgColor="aliceblue"
-        color="orange"
+        color="navy"
       />
       <MyButton
         msg="Envoyer"
         @click="handleSave"
-        bgColor="orange"
+        bgColor="navy"
         color="aliceblue"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+
 import MyInput from "@/components/MyInput.vue";
-import MyButton from "@/components/MyButton.vue";
+import MyButtonDay from "@/components/MyButtonDay.vue";
+// import MyButton from "@/components/MyButton.vue";
 
 export default defineComponent({
   name: "HomeView",
 
-  components: { MyInput, MyButton },
+  components: {
+    MyInput,
+    // MyButton,
+    MyButtonDay,
+  },
 
   data() {
     return {
@@ -74,11 +84,15 @@ export default defineComponent({
       chicken: "",
       smallChicken: "",
       patate: "",
+      saturday: new Date(),
+      sunday: new Date(),
     };
   },
 
   mounted() {
     this.name = localStorage.getItem("username") ?? "";
+    this.sunday = this.getMonday(new Date(), 0);
+    this.saturday = this.getMonday(new Date(), 7);
   },
 
   methods: {
@@ -118,6 +132,35 @@ export default defineComponent({
         alert("choisissez un jour");
       }
     },
+
+    getMonday(d: Date, dayIndex: number) {
+      d = new Date(d);
+
+      const day = d.getDay();
+      const diffToto = dayIndex - day + (dayIndex == 0 ? 7 : -1);
+
+      const diff = d.getDate() + diffToto;
+
+      return new Date(d.setDate(diff));
+    },
+
+    getFormatDate(d: Date) {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      let mNumber = today.getMonth() + 1; // Months start at 0!
+      let dNumber = today.getDate();
+      let dd = dNumber.toString();
+      let mm = mNumber.toString();
+
+      if (dNumber < 10) {
+        dd = "0" + dd;
+      }
+      if (mNumber < 10) {
+        mm = "0" + mm;
+      }
+
+      return dd + "/" + mm + "/" + yyyy;
+    },
   },
 });
 </script>
@@ -137,16 +180,19 @@ p {
   padding-left: 10px;
 }
 .container {
+  padding: 50px;
   max-width: 300px;
   margin: auto;
-  color: orange;
+  color: navy;
 }
 #daychoice,
 #daychoiceBtns {
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  padding-top: 37px;
 }
 button {
   width: 120px;
@@ -155,14 +201,14 @@ button {
   text-transform: uppercase;
   border: none;
   border-radius: 10px;
-  border: 1px solid orange;
-  color: orange;
+  border: 1px solid navy;
+  color: navy;
 }
 button:hover {
   cursor: pointer;
 }
 .isSelected {
-  background-color: orange;
+  background-color: navy;
   border: 1px solid aliceblue;
   color: white;
 }
