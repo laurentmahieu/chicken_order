@@ -14,7 +14,7 @@ export default defineComponent({
 
   props: {
     msg: String,
-    color: { String, default: "orange" },
+    color: { String, default: "navy" },
     bgColor: { String, default: "aliceblue" },
   },
 });
@@ -28,7 +28,7 @@ button {
   text-transform: uppercase;
   border: none;
   border-radius: 10px;
-  border: 1px solid orange;
-  color: orange;
+  border: 1px solid navy;
+  color: navy;
 }
 </style>
