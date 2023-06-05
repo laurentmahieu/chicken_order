@@ -55,8 +55,8 @@ export default defineComponent({
 
 <style scoped>
 label {
-  color: aliceblue;
-  background-color: black;
+  color: orange;
+  background-color: white;
   margin-bottom: -4px;
   margin-left: 5px;
   padding: 0 4px;
@@ -65,11 +65,11 @@ label {
   font-size: small;
 }
 input {
-  border: 1px solid aliceblue;
+  border: 1px solid orange;
   border-radius: 5px;
   padding: 15px;
-  background-color: black;
-  color: aliceblue;
+  background-color: white;
+  color: orange;
 }
 .borderRed {
   border: 1px solid #a83234;

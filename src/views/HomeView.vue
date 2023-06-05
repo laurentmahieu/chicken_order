@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <div id="homeHeader">
     <img src="/android-chrome-384x384.png" alt="alt" id="homeHeaderImg" />
@@ -141,6 +139,7 @@ p {
 .container {
   max-width: 300px;
   margin: auto;
+  color: orange;
 }
 #daychoice,
 #daychoiceBtns {
