@@ -1,6 +1,11 @@
 <template>
   <v-toolbar color="white" elevation="3">
-    <v-btn v-show="onboarding !== 0" icon="mdi-arrow-left" color="indigo" />
+    <v-btn
+      v-show="onboarding !== 0"
+      icon="mdi-arrow-left"
+      color="indigo"
+      @click="onboarding -= 1"
+    />
     <v-btn v-show="onboarding == 0" icon disabled />
     <v-spacer></v-spacer>
 
