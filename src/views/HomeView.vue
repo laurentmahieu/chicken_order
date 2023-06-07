@@ -1,20 +1,35 @@
 <template>
-  <v-row>
-    <v-col align="center">
+  <v-toolbar color="white" elevation="3">
+    <v-btn icon="mdi-arrow-left" color="indigo" />
+    <v-spacer></v-spacer>
+    <v-toolbar-items>
       <v-img
         src="/android-chrome-384x384.png"
         alt="alt"
         width="75px"
-        class="mt-6"
+        class="my-2"
       />
-    </v-col>
-  </v-row>
+    </v-toolbar-items>
+    <v-spacer></v-spacer>
+    <v-btn icon="mdi-basket-outline" color="indigo" />
+  </v-toolbar>
 
   <v-container>
     <v-card elevation="0">
       <v-card-text class="text-indigo mb-6">
         <p>Bonjour et bienvenue{{ name ? ` ${name}` : "" }},</p>
-        <p>Vous souhaitez réservez pour :</p>
+        <p>Vous souhaitez réservez ?</p>
+        <p>Dites m'en plus :</p>
+
+        <v-text-field
+          v-model="name"
+          label="Au nom de "
+          clearable
+          class="pa-3"
+          density="compact"
+          :rules="[rules.required]"
+        />
+        <p>Ce serait pour récupérer le :</p>
       </v-card-text>
 
       <v-row justify="space-around">
@@ -22,8 +37,9 @@
           stacked
           :color="choosenday === 1 ? 'indigo' : 'white'"
           text="samedi"
-          @click="choosenday = 1"
+          @click="setDay(1)"
           class="my-4"
+          :class="choosenday !== 1 ? 'text-indigo' : 'text-white'"
           width="220"
         >
           <template v-slot:append>{{ getFormatDate(saturday) }}</template>
@@ -34,8 +50,9 @@
             stacked
             :color="choosenday === 2 ? 'indigo' : 'white'"
             text="dimanche"
-            @click="choosenday = 2"
+            @click="setDay(2)"
             class="mb-4"
+            :class="choosenday !== 2 ? 'text-indigo' : 'text-white'"
             width="220"
           >
             <template v-slot:append>{{ getFormatDate(sunday) }}</template>
@@ -58,13 +75,12 @@ export default defineComponent({
     return {
       choosenday: null as number | null,
       name: "",
-      showRequireMessage: false,
-      lickChicken: "",
-      chicken: "",
-      smallChicken: "",
-      patate: "",
       saturday: new Date(),
       sunday: new Date(),
+      rules: {
+        required: (value: string) =>
+          !!value || "Comment te reconnaitre sans ton petit nom ?",
+      },
     };
   },
 
@@ -77,36 +93,11 @@ export default defineComponent({
   methods: {
     clearForm() {
       this.choosenday = null;
-      this.name = "";
-      this.showRequireMessage = false;
-      this.lickChicken = "";
-      this.chicken = "";
-      this.smallChicken = "";
-      this.patate = "";
+      this.name = localStorage.getItem("username") ?? "";
     },
 
     handleSave() {
       if (this.choosenday) {
-        if (this.name?.trim()) {
-          if (
-            this.lickChicken ||
-            this.chicken ||
-            this.smallChicken ||
-            this.patate
-          ) {
-            //
-            alert("Merci, à très vite");
-            localStorage.setItem("username", this.name);
-            this.$router.push("/");
-          } else {
-            alert(
-              "Veuillez au moins indiquer une quantité positive pour un article "
-            );
-          }
-        } else {
-          this.showRequireMessage = true;
-          alert("saisissez un nom");
-        }
       } else {
         alert("choisissez un jour");
       }
@@ -124,7 +115,7 @@ export default defineComponent({
     },
 
     getFormatDate(d: Date) {
-      const today = new Date();
+      const today = new Date(d);
       const yyyy = today.getFullYear();
       let mNumber = today.getMonth() + 1; // Months start at 0!
       let dNumber = today.getDate();
@@ -140,8 +131,10 @@ export default defineComponent({
 
       return dd + "/" + mm + "/" + yyyy;
     },
+
+    setDay(id: number) {
+      this.choosenday = id;
+    },
   },
 });
 </script>
-
-<style scoped></style>
