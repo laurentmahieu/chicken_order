@@ -6,7 +6,6 @@
       :color="onboarding === 0 ? 'white' : 'indigo'"
       @click="onboarding -= 1"
     />
-
     <v-spacer />
 
     <v-toolbar-items>
@@ -63,8 +62,8 @@ export default defineComponent({
     },
     updateArticle(id: number | null) {
       this.article = id;
-      if (!!id) {
-        this.onboarding += 1;
+      if (!!id || id === 0) {
+        ++this.onboarding;
       } else {
         //
       }
