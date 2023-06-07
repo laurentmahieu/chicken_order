@@ -1,77 +1,54 @@
 <template>
-  <div id="homeHeader">
-    <img src="/android-chrome-384x384.png" alt="alt" id="homeHeaderImg" />
-  </div>
-  <div class="container">
-    <p>Bonjour et bienvenue{{ name ? ` ${name}` : "" }},</p>
-    <p>Vous souhaitez réservez pour :</p>
-
-    <div id="daychoice">
-      <MyButtonDay
-        day="samedi"
-        :msg="getFormatDate(saturday)"
-        @click="choosenday = 1"
-        :bgColor="choosenday === 1 ? 'navy' : 'white'"
-        :color="choosenday === 1 ? 'white' : 'navy'"
+  <v-row>
+    <v-col align="center">
+      <v-img
+        src="/android-chrome-384x384.png"
+        alt="alt"
+        width="75px"
+        class="mt-6"
       />
+    </v-col>
+  </v-row>
 
-      <MyButtonDay
-        day="dimanche"
-        :msg="getFormatDate(sunday)"
-        @click="choosenday = 2"
-        :bgColor="choosenday === 2 ? 'navy' : 'white'"
-        :color="choosenday === 2 ? 'white' : 'navy'"
-      />
-    </div>
+  <v-container>
+    <v-card elevation="0">
+      <v-card-text class="text-indigo mb-6">
+        <p>Bonjour et bienvenue{{ name ? ` ${name}` : "" }},</p>
+        <p>Vous souhaitez réservez pour :</p>
+      </v-card-text>
 
-    <!--     
-    <MyInput
-      label="Nom *"
-      type="text"
-      name="name"
-      required
-      :showRequireMessage="showRequireMessage"
-      v-model="name"
-      @blurInput="showRequireMessage = true"
-    />
+      <v-row justify="space-around">
+        <v-col cols="8">
+          <v-btn
+            block
+            :color="choosenday === 1 ? 'indigo' : 'white'"
+            :text="`samedi - ${getFormatDate(saturday)}`"
+            @click="choosenday = 1"
+            class="mb-4"
+          />
+        </v-col>
 
-    <MyInput label="Nombre de poulet de Lick" v-model="lickChicken" />
-    <MyInput label="Nombre de poulet 1,4 kg" v-model="chicken" />
-    <MyInput label="Nombre de poulet 1,2 kg" v-model="smallChicken" />
-    <MyInput label="Nombre de barquette de pomme de terre" v-model="patate" />
-
-    <div style="display: flex; justify-content: space-between">
-      <MyButton
-        msg="Annuler"
-        @click="clearForm"
-        bgColor="aliceblue"
-        color="navy"
-      />
-      <MyButton
-        msg="Envoyer"
-        @click="handleSave"
-        bgColor="navy"
-        color="aliceblue"
-      />
-    </div> -->
-  </div>
+        <v-col cols="8">
+          <v-btn
+            block
+            :color="choosenday === 2 ? 'indigo' : 'white'"
+            :text="`dimanche - ${getFormatDate(sunday)}`"
+            @click="choosenday = 2"
+            class="mb-4"
+          />
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import MyInput from "@/components/MyInput.vue";
-import MyButtonDay from "@/components/MyButtonDay.vue";
-// import MyButton from "@/components/MyButton.vue";
-
 export default defineComponent({
   name: "HomeView",
 
-  components: {
-    MyInput,
-    // MyButton,
-    MyButtonDay,
-  },
+  components: {},
 
   data() {
     return {
@@ -163,50 +140,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-#homeHeader {
-  width: 100%;
-  height: 75px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-#homeHeaderImg {
-  height: 90%;
-}
-p {
-  padding-left: 10px;
-}
-.container {
-  padding: 50px;
-  max-width: 300px;
-  margin: auto;
-  color: navy;
-}
-#daychoice {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 37px;
-}
-button {
-  width: 120px;
-  margin: 10px;
-  padding: 10px;
-  text-transform: uppercase;
-  border: none;
-  border-radius: 10px;
-  border: 1px solid navy;
-  color: navy;
-}
-button:hover {
-  cursor: pointer;
-}
-.isSelected {
-  background-color: navy;
-  border: 1px solid aliceblue;
-  color: white;
-}
-</style>
+<style scoped></style>
