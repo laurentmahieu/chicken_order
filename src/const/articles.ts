@@ -1,6 +1,6 @@
 const ARTICLES = [
   {
-    name: "Poulet Lick",
+    name: "Poulet Licques",
     subtitle: "",
     price: "n €",
   },
