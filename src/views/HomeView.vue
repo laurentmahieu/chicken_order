@@ -18,24 +18,28 @@
       </v-card-text>
 
       <v-row justify="space-around">
-        <v-col cols="8">
-          <v-btn
-            block
-            :color="choosenday === 1 ? 'indigo' : 'white'"
-            :text="`samedi - ${getFormatDate(saturday)}`"
-            @click="choosenday = 1"
-            class="mb-4"
-          />
-        </v-col>
+        <v-btn
+          stacked
+          :color="choosenday === 1 ? 'indigo' : 'white'"
+          text="samedi"
+          @click="choosenday = 1"
+          class="my-4"
+          width="220"
+        >
+          <template v-slot:append>{{ getFormatDate(saturday) }}</template>
+        </v-btn>
 
         <v-col cols="8">
           <v-btn
-            block
+            stacked
             :color="choosenday === 2 ? 'indigo' : 'white'"
-            :text="`dimanche - ${getFormatDate(sunday)}`"
+            text="dimanche"
             @click="choosenday = 2"
             class="mb-4"
-          />
+            width="220"
+          >
+            <template v-slot:append>{{ getFormatDate(sunday) }}</template>
+          </v-btn>
         </v-col>
       </v-row>
     </v-card>
