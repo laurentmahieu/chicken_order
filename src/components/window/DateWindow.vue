@@ -6,15 +6,17 @@
         <p>Vous souhaitez réservez ?</p>
         <p>Dites m'en plus :</p>
 
-        <v-text-field
-          v-model="name"
-          label="Au nom de "
-          clearable
-          class="pa-3"
-          density="compact"
-          :rules="[rules.required]"
-          autofocus
-        />
+        <v-form ref="form" validate-on="blur">
+          <v-text-field
+            v-model="nameUppercase"
+            label="Au nom de "
+            clearable
+            class="pa-3"
+            density="compact"
+            :rules="[rules.required]"
+            autofocus
+          />
+        </v-form>
         <p>Ce serait pour récupérer le :</p>
       </v-card-text>
 
@@ -50,6 +52,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import { useBasketStore } from "@/stores/basketStore";
+import { mapWritableState } from "pinia";
+
 export default defineComponent({
   name: "DateWindow",
 
@@ -61,9 +66,23 @@ export default defineComponent({
       sunday: new Date(),
       rules: {
         required: (value: string) =>
-          !!value || "Comment te reconnaitre sans ton petit nom ?",
+          (!!value && !!value.trim()) ||
+          "Comment te reconnaitre sans ton petit nom ?",
       },
     };
+  },
+
+  computed: {
+    ...mapWritableState(useBasketStore, ["basketName", "basketDate"]),
+
+    nameUppercase: {
+      get() {
+        return this.name;
+      },
+      set(newValue: string | null) {
+        this.name = newValue?.trim()?.toLocaleUpperCase() ?? "";
+      },
+    },
   },
 
   mounted() {
@@ -79,10 +98,10 @@ export default defineComponent({
     },
 
     handleSave() {
-      if (this.choosenday) {
-      } else {
-        alert("choisissez un jour");
-      }
+      this.basketName = this.name;
+      this.basketDate = this.choosenday === 1 ? this.saturday : this.sunday;
+      localStorage.setItem("username", this.name);
+      this.$emit("next");
     },
 
     getMonday(d: Date, dayIndex: number) {
@@ -90,7 +109,6 @@ export default defineComponent({
 
       const day = d.getDay();
       const diffToto = dayIndex - day + (dayIndex == 0 ? 7 : -1);
-
       const diff = d.getDate() + diffToto;
 
       return new Date(d.setDate(diff));
@@ -116,6 +134,13 @@ export default defineComponent({
 
     setDay(id: number) {
       this.choosenday = id;
+      this.validate();
+    },
+
+    async validate() {
+      const { valid } = await this.$refs.form.validate();
+
+      if (valid && this.choosenday) this.handleSave();
     },
   },
 });
