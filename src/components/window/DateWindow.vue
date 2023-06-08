@@ -138,7 +138,7 @@ export default defineComponent({
     },
 
     async validate() {
-      const { valid } = await this.$refs.form.validate();
+      const { valid } = await Object(this.$refs.form).validate();
 
       if (valid && this.choosenday) this.handleSave();
     },
