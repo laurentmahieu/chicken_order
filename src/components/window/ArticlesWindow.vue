@@ -7,7 +7,7 @@
 
       <v-card-actions>
         <v-row>
-          <v-col>
+          <v-col align="center">
             <v-row align="center" justify="space-around">
               <v-btn
                 v-for="(article, i) in ARTICLES"

@@ -89,6 +89,7 @@ export default defineComponent({
   methods: {
     goBasket() {
       // this.onboarding += 1;
+      alert("Panier en cour de production");
     },
     updateArticle(id: number | undefined) {
       this.article = id;

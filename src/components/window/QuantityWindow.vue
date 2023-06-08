@@ -32,16 +32,20 @@
       </v-card-text>
 
       <v-card-actions v-show="article !== 3">
-        <v-btn
-          stacked
-          color="indigo"
-          text="Confirmer"
-          class="ma-4"
-          width="300"
-          variant="elevated"
-          :disabled="!quantityValue"
-          @click="confirmQuantity"
-        />
+        <v-row>
+          <v-col align="center">
+            <v-btn
+              stacked
+              color="indigo"
+              text="Confirmer"
+              class="ma-4"
+              width="300"
+              variant="elevated"
+              :disabled="!quantityValue"
+              @click="confirmQuantity"
+            />
+          </v-col>
+        </v-row>
       </v-card-actions>
     </v-card>
   </v-container>
