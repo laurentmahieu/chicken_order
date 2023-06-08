@@ -27,16 +27,18 @@
               </v-btn>
             </v-row>
 
-            <v-btn
-              v-if="basket.length"
-              stacked
-              color="indigo"
-              text="Déjà fini ?"
-              class="ma-4"
-              width="300"
-              variant="elevated"
-              @click="$emit('goBasket')"
-            />
+            <v-row justify="center">
+              <v-btn
+                v-if="basket.length"
+                stacked
+                color="indigo"
+                text="Déjà fini ?"
+                class="ma-4"
+                width="300"
+                variant="elevated"
+                @click="$emit('goBasket')"
+              />
+            </v-row>
           </v-col>
         </v-row>
       </v-card-actions>

@@ -27,26 +27,32 @@
         </v-row>
       </v-card-actions>
 
-      <v-card-text class="text-indigo" v-show="article !== 3">
-        <v-switch label="De la sauce ?" v-model="withSauce" class="mx-4" />
-      </v-card-text>
+      <div v-show="article !== 3">
+        <v-switch
+          color="indigo"
+          label="De la sauce ?"
+          v-model="withSauce"
+          class="mx-4"
+          hide-details
+        />
 
-      <v-card-actions v-show="article !== 3">
-        <v-row>
-          <v-col align="center">
-            <v-btn
-              stacked
-              color="indigo"
-              text="Confirmer"
-              class="ma-4"
-              width="300"
-              variant="elevated"
-              :disabled="!quantityValue"
-              @click="confirmQuantity"
-            />
-          </v-col>
-        </v-row>
-      </v-card-actions>
+        <v-card-actions>
+          <v-row>
+            <v-col align="center">
+              <v-btn
+                stacked
+                color="indigo"
+                text="Confirmer"
+                class="ma-4"
+                width="300"
+                variant="elevated"
+                :disabled="!quantityValue"
+                @click="confirmQuantity"
+              />
+            </v-col>
+          </v-row>
+        </v-card-actions>
+      </div>
     </v-card>
   </v-container>
 </template>
