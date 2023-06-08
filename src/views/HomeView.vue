@@ -1,170 +1,104 @@
-<script setup lang="ts"></script>
-
 <template>
-  <div id="homeHeader">
-    <img src="/android-chrome-384x384.png" alt="alt" id="homeHeaderImg" />
-  </div>
-  <div class="container">
-    <p>Bonjour et bienvenue{{ ` ${name}` }},</p>
-    <p>Vous souhaitez réservez pour :</p>
-
-    <div id="daychoice">
-      <div id="daychoiceBtns">
-        <MyButton
-          msg="Samedi"
-          @click="choosenday = 1"
-          :bgColor="choosenday === 1 ? 'orange' : 'aliceblue'"
-          :color="choosenday === 1 ? 'aliceblue' : 'orange'"
-        />
-
-        <MyButton
-          msg="dimanche"
-          @click="choosenday = 2"
-          :bgColor="choosenday === 2 ? 'orange' : 'aliceblue'"
-          :color="choosenday === 2 ? 'aliceblue' : 'orange'"
-        />
-      </div>
-    </div>
-    <MyInput
-      label="Nom *"
-      type="text"
-      name="name"
-      required
-      :showRequireMessage="showRequireMessage"
-      v-model="name"
-      @blurInput="showRequireMessage = true"
+  <v-toolbar color="white" elevation="3">
+    <v-btn
+      icon="mdi-arrow-left"
+      :disabled="onboarding === 0"
+      :color="onboarding === 0 ? 'white' : 'indigo'"
+      @click="onboarding -= 1"
     />
+    <v-spacer />
 
-    <MyInput label="Nombre de poulet de Lick" v-model="lickChicken" />
-    <MyInput label="Nombre de poulet 1,4 kg" v-model="chicken" />
-    <MyInput label="Nombre de poulet 1,2 kg" v-model="smallChicken" />
-    <MyInput label="Nombre de barquette de pomme de terre" v-model="patate" />
+    <v-toolbar-items>
+      <v-img
+        src="/android-chrome-384x384.png"
+        alt="alt"
+        width="75px"
+        class="my-2"
+      />
+    </v-toolbar-items>
 
-    <div style="display: flex; justify-content: space-between">
-      <MyButton
-        msg="Annuler"
-        @click="clearForm"
-        bgColor="aliceblue"
-        color="orange"
-      />
-      <MyButton
-        msg="Envoyer"
-        @click="handleSave"
-        bgColor="orange"
-        color="aliceblue"
-      />
-    </div>
-  </div>
+    <v-spacer />
+    <v-btn icon="mdi-basket-outline" color="indigo" @click="goBasket">
+      <v-badge
+        v-if="basket.length"
+        :content="numberArticle"
+        location="bottom end"
+        text-color="indigo"
+        color="white"
+        bordered
+      >
+        <v-icon> mdi-basket-outline</v-icon>
+      </v-badge>
+    </v-btn>
+  </v-toolbar>
+
+  <v-window v-model="onboarding">
+    <v-window-item>
+      <DateWindow @next="onboarding = 1" />
+    </v-window-item>
+
+    <v-window-item>
+      <ArticlesWindow @goBasket="goBasket" @next="updateArticle" />
+    </v-window-item>
+
+    <v-window-item>
+      <QuantityWindow :article="article" @next="updateArticle" />
+    </v-window-item>
+  </v-window>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import MyInput from "@/components/MyInput.vue";
-import MyButton from "@/components/MyButton.vue";
+
+// Components
+import DateWindow from "@/components/window/DateWindow.vue";
+import ArticlesWindow from "@/components/window/ArticlesWindow.vue";
+import QuantityWindow from "@/components/window/QuantityWindow.vue";
+import { useBasketStore } from "@/stores/basketStore";
+import { mapState } from "pinia";
 
 export default defineComponent({
   name: "HomeView",
 
-  components: { MyInput, MyButton },
+  components: {
+    DateWindow,
+    ArticlesWindow,
+    QuantityWindow,
+  },
 
   data() {
     return {
-      choosenday: null as number | null,
-      name: "",
-      showRequireMessage: false,
-      lickChicken: "",
-      chicken: "",
-      smallChicken: "",
-      patate: "",
+      onboarding: 0,
+      article: undefined as number | undefined,
     };
   },
 
-  mounted() {
-    this.name = localStorage.getItem("username") ?? "";
+  computed: {
+    ...mapState(useBasketStore, ["basket"]),
+
+    numberArticle() {
+      let numberArticle = 0;
+      this.basket.forEach((element) => {
+        numberArticle =
+          numberArticle + (element.quantity == 0.5 ? 1 : element.quantity);
+      });
+      return numberArticle;
+    },
   },
 
   methods: {
-    clearForm() {
-      this.choosenday = null;
-      this.name = "";
-      this.showRequireMessage = false;
-      this.lickChicken = "";
-      this.chicken = "";
-      this.smallChicken = "";
-      this.patate = "";
+    goBasket() {
+      // this.onboarding += 1;
+      alert("Panier en cour de production");
     },
-
-    handleSave() {
-      if (this.choosenday) {
-        if (this.name?.trim()) {
-          if (
-            this.lickChicken ||
-            this.chicken ||
-            this.smallChicken ||
-            this.patate
-          ) {
-            //
-            alert("Merci, à très vite");
-            localStorage.setItem("username", this.name);
-            this.$router.push("/");
-          } else {
-            alert(
-              "Veuillez au moins indiquer une quantité positive pour un article "
-            );
-          }
-        } else {
-          this.showRequireMessage = true;
-          alert("saisissez un nom");
-        }
+    updateArticle(id: number | undefined) {
+      this.article = id;
+      if (!!id || id === 0) {
+        ++this.onboarding;
       } else {
-        alert("choisissez un jour");
+        this.onboarding = 1;
       }
     },
   },
 });
 </script>
-
-<style scoped>
-#homeHeader {
-  width: 100%;
-  height: 75px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-#homeHeaderImg {
-  height: 90%;
-}
-p {
-  padding-left: 10px;
-}
-.container {
-  max-width: 300px;
-  margin: auto;
-}
-#daychoice,
-#daychoiceBtns {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-button {
-  width: 120px;
-  margin: 10px;
-  padding: 10px;
-  text-transform: uppercase;
-  border: none;
-  border-radius: 10px;
-  border: 1px solid orange;
-  color: orange;
-}
-button:hover {
-  cursor: pointer;
-}
-.isSelected {
-  background-color: orange;
-  border: 1px solid aliceblue;
-  color: white;
-}
-</style>
