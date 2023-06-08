@@ -18,7 +18,7 @@
     </v-toolbar-items>
 
     <v-spacer />
-    <v-btn icon="mdi-basket-outline" color="indigo">
+    <v-btn icon="mdi-basket-outline" color="indigo" @click="goBasket">
       <v-badge
         v-if="basket.length"
         :content="numberArticle"
