@@ -18,7 +18,18 @@
     </v-toolbar-items>
 
     <v-spacer />
-    <v-btn icon="mdi-basket-outline" color="indigo" />
+    <v-btn icon="mdi-basket-outline" color="indigo">
+      <v-badge
+        v-if="basket.length"
+        :content="numberArticle"
+        location="bottom end"
+        text-color="indigo"
+        color="white"
+        bordered
+      >
+        <v-icon> mdi-basket-outline</v-icon>
+      </v-badge>
+    </v-btn>
   </v-toolbar>
 
   <v-window v-model="onboarding">
@@ -30,7 +41,9 @@
       <ArticlesWindow @goBasket="goBasket" @next="updateArticle" />
     </v-window-item>
 
-    <v-window-item> quantity </v-window-item>
+    <v-window-item>
+      <QuantityWindow :article="article" @next="updateArticle" />
+    </v-window-item>
   </v-window>
 </template>
 
@@ -40,6 +53,9 @@ import { defineComponent } from "vue";
 // Components
 import DateWindow from "@/components/window/DateWindow.vue";
 import ArticlesWindow from "@/components/window/ArticlesWindow.vue";
+import QuantityWindow from "@/components/window/QuantityWindow.vue";
+import { useBasketStore } from "@/stores/basketStore";
+import { mapState } from "pinia";
 
 export default defineComponent({
   name: "HomeView",
@@ -47,25 +63,39 @@ export default defineComponent({
   components: {
     DateWindow,
     ArticlesWindow,
+    QuantityWindow,
   },
 
   data() {
     return {
       onboarding: 0,
-      article: null as number | null,
+      article: undefined as number | undefined,
     };
+  },
+
+  computed: {
+    ...mapState(useBasketStore, ["basket"]),
+
+    numberArticle() {
+      let numberArticle = 0;
+      this.basket.forEach((element) => {
+        numberArticle =
+          numberArticle + (element.quantity == 0.5 ? 1 : element.quantity);
+      });
+      return numberArticle;
+    },
   },
 
   methods: {
     goBasket() {
       // this.onboarding += 1;
     },
-    updateArticle(id: number | null) {
+    updateArticle(id: number | undefined) {
       this.article = id;
       if (!!id || id === 0) {
         ++this.onboarding;
       } else {
-        //
+        this.onboarding = 1;
       }
     },
   },
