@@ -18,7 +18,7 @@
     </v-toolbar-items>
 
     <v-spacer />
-    <v-btn icon="mdi-basket-outline" color="indigo" @click="goBasket">
+    <v-btn icon color="indigo" @click="goBasket">
       <v-badge
         v-if="basket.length"
         :content="numberArticle"
@@ -101,11 +101,7 @@ export default defineComponent({
 
     handlePreviousView() {
       if (this.onboarding > 0) {
-        if (this.onboarding === 3) {
-          this.onboarding = 1;
-        } else {
-          this.onboarding--;
-        }
+        this.onboarding = this.onboarding === 3 ? 1 : this.onboarding - 1;
       }
     },
   },
