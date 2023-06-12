@@ -3,13 +3,13 @@
     <v-card elevation="0">
       <v-card-text class="text-indigo mb-6">
         <p>Bonjour et bienvenue{{ name ? ` ${name}` : "" }},</p>
-        <p>Vous souhaitez réservez ?</p>
-        <p>Dites m'en plus :</p>
+        <p>Vous souhaitez réserver ?</p>
+        <p>Dites-m'en plus :</p>
 
         <v-form ref="form" validate-on="blur">
           <v-text-field
             v-model="nameUppercase"
-            label="Au nom de "
+            label="Au nom de"
             clearable
             class="pa-3"
             density="compact"
@@ -67,7 +67,7 @@ export default defineComponent({
       rules: {
         required: (value: string) =>
           (!!value && !!value.trim()) ||
-          "Comment te reconnaitre sans ton petit nom ?",
+          "Comment te reconnaître sans ton petit nom ?",
       },
     };
   },
@@ -80,15 +80,22 @@ export default defineComponent({
         return this.name;
       },
       set(newValue: string | null) {
-        this.name = newValue?.trim()?.toLocaleUpperCase() ?? "";
+        this.name = (newValue?.trim() ?? "").toLocaleUpperCase();
       },
+    },
+  },
+
+  watch: {
+    basketDate(newValue) {
+      if (!newValue) {
+        this.choosenday = null;
+      }
     },
   },
 
   mounted() {
     this.name = localStorage.getItem("username") ?? "";
-    this.sunday = this.getMonday(new Date(), 0);
-    this.saturday = this.getMonday(new Date(), 7);
+    this.getNextWeekSatNSun();
   },
 
   methods: {
@@ -104,14 +111,27 @@ export default defineComponent({
       this.$emit("next");
     },
 
-    getMonday(d: Date, dayIndex: number) {
-      d = new Date(d);
+    getNextWeekSatNSun() {
+      const today = new Date();
+      const jourActuel = today.getDay(); // Récupère le jour de la semaine actuel (0 = dimanche, 1 = lundi, ..., 6 = samedi)
+      const joursRestants = 6 - jourActuel; // Calcule le nombre de jours restants jusqu'à samedi (6 = samedi)
 
-      const day = d.getDay();
-      const diffToto = dayIndex - day + (dayIndex == 0 ? 7 : -1);
-      const diff = d.getDate() + diffToto;
+      // Ajoute les jours restants à la date actuelle pour obtenir la date de samedi prochain
+      const nextSaturday = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() + joursRestants
+      );
 
-      return new Date(d.setDate(diff));
+      // Ajoute 1 jour à la date de samedi pour obtenir la date de dimanche prochain
+      const nextSunday = new Date(
+        nextSaturday.getFullYear(),
+        nextSaturday.getMonth(),
+        nextSaturday.getDate() + 1
+      );
+
+      this.saturday = nextSaturday;
+      this.sunday = nextSunday;
     },
 
     getFormatDate(d: Date) {

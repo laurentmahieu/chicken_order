@@ -11,9 +11,7 @@ export default defineComponent({
   name: "LoadingView",
 
   mounted() {
-    setTimeout(() => {
-      this.closeLoader();
-    }, 3000);
+    setTimeout(this.closeLoader, 3000);
   },
 
   methods: {
