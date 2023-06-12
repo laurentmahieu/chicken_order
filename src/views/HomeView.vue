@@ -4,7 +4,7 @@
       icon="mdi-arrow-left"
       :disabled="onboarding === 0"
       :color="onboarding === 0 ? 'white' : 'indigo'"
-      @click="handlePrevisousView()"
+      @click="handlePreviousView"
     />
     <v-spacer />
 
@@ -27,7 +27,7 @@
         color="white"
         bordered
       >
-        <v-icon> mdi-basket-outline</v-icon>
+        <v-icon>mdi-basket-outline</v-icon>
       </v-badge>
     </v-btn>
   </v-toolbar>
@@ -54,13 +54,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-// Components
 import DateWindow from "@/components/window/DateWindow.vue";
 import ArticlesWindow from "@/components/window/ArticlesWindow.vue";
 import QuantityWindow from "@/components/window/QuantityWindow.vue";
 import BasketWindow from "@/components/window/BasketWindow.vue";
 
-// Store
 import { useBasketStore } from "@/stores/basketStore";
 import { mapState } from "pinia";
 
@@ -85,12 +83,9 @@ export default defineComponent({
     ...mapState(useBasketStore, ["basket"]),
 
     numberArticle() {
-      let numberArticle = 0;
-      this.basket.forEach((element) => {
-        numberArticle =
-          numberArticle + (element.quantity == 0.5 ? 1 : element.quantity);
-      });
-      return numberArticle;
+      return this.basket.reduce((total, element) => {
+        return total + (element.quantity === 0.5 ? 1 : element.quantity);
+      }, 0);
     },
   },
 
@@ -101,18 +96,14 @@ export default defineComponent({
 
     updateArticle(id: number | undefined) {
       this.article = id;
-      if (!!id || id === 0) {
-        ++this.onboarding;
-      } else {
-        this.onboarding = 1;
-      }
+      this.onboarding = id !== undefined || id === 0 ? this.onboarding + 1 : 1;
     },
 
-    handlePrevisousView() {
+    handlePreviousView() {
       switch (this.onboarding) {
         case 1:
         case 2:
-          this.onboarding = this.onboarding - 1;
+          this.onboarding--;
           break;
 
         case 3:
