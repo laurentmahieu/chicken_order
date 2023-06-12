@@ -100,19 +100,12 @@ export default defineComponent({
     },
 
     handlePreviousView() {
-      switch (this.onboarding) {
-        case 1:
-        case 2:
-          this.onboarding--;
-          break;
-
-        case 3:
+      if (this.onboarding > 0) {
+        if (this.onboarding === 3) {
           this.onboarding = 1;
-          break;
-
-        default:
-          this.onboarding = 0;
-          break;
+        } else {
+          this.onboarding--;
+        }
       }
     },
   },
