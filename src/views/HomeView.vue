@@ -4,7 +4,7 @@
       icon="mdi-arrow-left"
       :disabled="onboarding === 0"
       :color="onboarding === 0 ? 'white' : 'indigo'"
-      @click="onboarding -= 1"
+      @click="handlePrevisousView()"
     />
     <v-spacer />
 
@@ -44,6 +44,10 @@
     <v-window-item>
       <QuantityWindow :article="article" @next="updateArticle" />
     </v-window-item>
+
+    <v-window-item>
+      <BasketWindow @goHome="onboarding = 0" />
+    </v-window-item>
   </v-window>
 </template>
 
@@ -54,6 +58,9 @@ import { defineComponent } from "vue";
 import DateWindow from "@/components/window/DateWindow.vue";
 import ArticlesWindow from "@/components/window/ArticlesWindow.vue";
 import QuantityWindow from "@/components/window/QuantityWindow.vue";
+import BasketWindow from "@/components/window/BasketWindow.vue";
+
+// Store
 import { useBasketStore } from "@/stores/basketStore";
 import { mapState } from "pinia";
 
@@ -64,6 +71,7 @@ export default defineComponent({
     DateWindow,
     ArticlesWindow,
     QuantityWindow,
+    BasketWindow,
   },
 
   data() {
@@ -88,15 +96,32 @@ export default defineComponent({
 
   methods: {
     goBasket() {
-      // this.onboarding += 1;
-      alert("Panier en cour de production");
+      this.onboarding = 3;
     },
+
     updateArticle(id: number | undefined) {
       this.article = id;
       if (!!id || id === 0) {
         ++this.onboarding;
       } else {
         this.onboarding = 1;
+      }
+    },
+
+    handlePrevisousView() {
+      switch (this.onboarding) {
+        case 1:
+        case 2:
+          this.onboarding = this.onboarding - 1;
+          break;
+
+        case 3:
+          this.onboarding = 1;
+          break;
+
+        default:
+          this.onboarding = 0;
+          break;
       }
     },
   },
