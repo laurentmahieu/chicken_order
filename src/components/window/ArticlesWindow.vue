@@ -2,7 +2,7 @@
   <v-container>
     <v-card elevation="0">
       <v-card-text class="text-indigo mb-6">
-        <p>Que souhaitez vous ajouter ?</p>
+        <p>Que souhaitez-vous ajouter ?</p>
       </v-card-text>
 
       <v-card-actions>
