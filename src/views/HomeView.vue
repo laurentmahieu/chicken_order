@@ -83,9 +83,12 @@ export default defineComponent({
     ...mapState(useBasketStore, ["basket"]),
 
     numberArticle() {
-      return this.basket.reduce((total, element) => {
-        return total + (element.quantity === 0.5 ? 1 : element.quantity);
-      }, 0);
+      let numberArticle = 0;
+      this.basket.forEach((element) => {
+        numberArticle =
+          numberArticle + (element.quantity == 0.5 ? 1 : element.quantity);
+      });
+      return numberArticle;
     },
   },
 
