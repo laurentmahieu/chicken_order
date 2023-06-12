@@ -3,13 +3,13 @@
     <v-card elevation="0">
       <v-card-text class="text-indigo mb-6">
         <p>Bonjour et bienvenue{{ name ? ` ${name}` : "" }},</p>
-        <p>Vous souhaitez réservez ?</p>
-        <p>Dites m'en plus :</p>
+        <p>Vous souhaitez réserver ?</p>
+        <p>Dites-m'en plus :</p>
 
         <v-form ref="form" validate-on="blur">
           <v-text-field
             v-model="nameUppercase"
-            label="Au nom de "
+            label="Au nom de"
             clearable
             class="pa-3"
             density="compact"
@@ -67,7 +67,7 @@ export default defineComponent({
       rules: {
         required: (value: string) =>
           (!!value && !!value.trim()) ||
-          "Comment te reconnaitre sans ton petit nom ?",
+          "Comment te reconnaître sans ton petit nom ?",
       },
     };
   },
@@ -80,7 +80,7 @@ export default defineComponent({
         return this.name;
       },
       set(newValue: string | null) {
-        this.name = newValue?.trim()?.toLocaleUpperCase() ?? "";
+        this.name = (newValue?.trim() ?? "").toLocaleUpperCase();
       },
     },
   },
@@ -112,9 +112,9 @@ export default defineComponent({
     },
 
     getNextWeekSatNSun() {
-      var today = new Date();
-      var jourActuel = today.getDay(); // Récupère le jour de la semaine actuel (0 = dimanche, 1 = lundi, ..., 6 = samedi)
-      var joursRestants = 6 - jourActuel; // Calcule le nombre de jours restants jusqu'à samedi (6 = samedi)
+      const today = new Date();
+      const jourActuel = today.getDay(); // Récupère le jour de la semaine actuel (0 = dimanche, 1 = lundi, ..., 6 = samedi)
+      const joursRestants = 6 - jourActuel; // Calcule le nombre de jours restants jusqu'à samedi (6 = samedi)
 
       // Ajoute les jours restants à la date actuelle pour obtenir la date de samedi prochain
       const nextSaturday = new Date(
