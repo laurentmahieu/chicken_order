@@ -2,7 +2,7 @@
   <v-container>
     <v-card elevation="0">
       <v-card-text class="text-indigo mb-6">
-        <p>Combien en souhaitez vous ?</p>
+        <p>Combien en souhaitez-vous ?</p>
       </v-card-text>
 
       <v-card-actions class="mb-6">
@@ -13,9 +13,9 @@
                 <v-btn
                   :text="`${quantity}`"
                   :class="
-                    quantityValue == quantity ? 'text-white' : 'text-indigo'
+                    quantityValue === quantity ? 'text-white' : 'text-indigo'
                   "
-                  :color="quantityValue == quantity ? 'indigo' : 'white'"
+                  :color="quantityValue === quantity ? 'indigo' : 'white'"
                   variant="elevated"
                   height="100"
                   width="100"
@@ -60,9 +60,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-// Const
 import ARTICLES from "@/const/articles";
-import { mapActions, mapWritableState } from "pinia";
+
+import { mapActions } from "pinia";
 import { useBasketStore } from "@/stores/basketStore";
 
 export default defineComponent({
@@ -92,8 +92,8 @@ export default defineComponent({
 
     confirmQuantity() {
       try {
-        if ((this.article || this.article == 0) && this.quantityValue) {
-          const newArticle = ARTICLES[this.article];
+        if (this.article !== undefined && this.quantityValue !== undefined) {
+          const newArticle = { ...ARTICLES[this.article] };
           newArticle.quantity = this.quantityValue;
           newArticle.sauce = this.article === 3 ? false : this.withSauce;
 
@@ -101,7 +101,7 @@ export default defineComponent({
           this.$emit("next");
           this.quantityValue = undefined;
         } else {
-          alert("Erreur: On a oublié de quel article il s'agisait");
+          alert("Erreur: On a oublié de quel article il s'agissait.");
         }
       } catch (error) {
         alert(error);
