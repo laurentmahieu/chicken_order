@@ -4,7 +4,7 @@
       <v-card-text class="text-indigo mb-6">
         <p>On récapitule {{ basketName }} ?</p>
         <p>
-          Le {{ basketDate ? formaterDate(basketDate) : "error" }}, tu souahites
+          Le {{ basketDate ? formaterDate(basketDate) : "error" }}, tu souhaites
           venir récupérer :
         </p>
 
