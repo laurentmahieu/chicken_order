@@ -22,6 +22,7 @@
 
       <v-row justify="space-around">
         <v-btn
+          v-if="saturday < sunday"
           stacked
           :color="choosenday === 1 ? 'indigo' : 'white'"
           text="samedi"
@@ -43,6 +44,19 @@
           width="220"
         >
           <template v-slot:append>{{ getFormatDate(sunday) }}</template>
+        </v-btn>
+
+        <v-btn
+          v-if="saturday > sunday"
+          stacked
+          :color="choosenday === 1 ? 'indigo' : 'white'"
+          text="samedi"
+          @click="setDay(1)"
+          class="ma-4"
+          :class="choosenday !== 1 ? 'text-indigo' : 'text-white'"
+          width="220"
+        >
+          <template v-slot:append>{{ getFormatDate(saturday) }}</template>
         </v-btn>
       </v-row>
     </v-card>
@@ -130,8 +144,10 @@ export default defineComponent({
         nextSaturday.getDate() + 1
       );
 
-      this.saturday = nextSaturday;
       this.sunday = nextSunday;
+      this.saturday = joursRestants
+        ? nextSaturday
+        : new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7);
     },
 
     getFormatDate(d: Date) {
